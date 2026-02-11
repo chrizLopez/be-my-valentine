@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Be My Valentine</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="scene">
+      <section class="card">
+        <div class="heart-cluster" aria-hidden="true">
+          <span class="heart heart-1"></span>
+          <span class="heart heart-2"></span>
+          <span class="heart heart-3"></span>
+          <span class="heart heart-4"></span>
+          <span class="heart heart-5"></span>
+        </div>
+        <p class="eyebrow">A little note for you</p>
+        <h1 id="headline">Will you be my valentine?</h1>
+        <p class="subtext">
+          I saved a spot for us — a sweet moment, a warm smile, and a beautiful
+          memory waiting to happen.
+        </p>
+        <div class="actions">
+          <button class="btn btn-yes" id="yesBtn" type="button">Yes, absolutely!</button>
+          <div class="no-slot">
+            <button class="btn btn-no" id="noBtn" type="button">Not this time</button>
+          </div>
+        </div>
+      </section>
+      <div class="floating-hearts" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="celebration" id="celebration" aria-hidden="true">
+        <div class="celebration-card">
+          <p class="celebration-eyebrow">You made my day</p>
+          <h2>It’s a date!</h2>
+          <p class="celebration-text">I’ll bring the smiles — you bring the magic.</p>
+        </div>
+      </div>
+    </main>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const rawName = params.get("name");
+      const name = rawName ? rawName.trim() : "";
+      const headline = document.getElementById("headline");
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      const noSlot = document.querySelector(".no-slot");
+      const celebration = document.getElementById("celebration");
+      const actions = document.querySelector(".actions");
+
+      if (name) {
+        headline.textContent = `${name}, will you be my valentine?`;
+      }
+
+      yesBtn.addEventListener("click", () => {
+        document.body.classList.add("celebrate");
+        celebration.setAttribute("aria-hidden", "false");
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+      });
+
+      let noIsFloating = false;
+      const edgePadding = 16;
+      let noWidth = 0;
+      let noHeight = 0;
+
+      function syncNoSize() {
+        const yesRect = yesBtn.getBoundingClientRect();
+        noWidth = Math.round(yesRect.width);
+        noHeight = Math.round(yesRect.height);
+        noBtn.style.setProperty("--no-width", `${noWidth}px`);
+        noBtn.style.setProperty("--no-height", `${noHeight}px`);
+        noSlot.style.setProperty("--no-width", `${noWidth}px`);
+        noSlot.style.setProperty("--no-height", `${noHeight}px`);
+      }
+
+      function floatNoButton() {
+        if (window.matchMedia("(max-width: 640px)").matches) return;
+        if (document.body.classList.contains("celebrate")) return;
+        if (!noIsFloating) {
+          const rect = noBtn.getBoundingClientRect();
+          noBtn.classList.add("is-floating");
+          noBtn.style.left = `${Math.round(rect.left)}px`;
+          noBtn.style.top = `${Math.round(rect.top)}px`;
+          syncNoSize();
+          document.body.appendChild(noBtn);
+          noIsFloating = true;
+        }
+      }
+
+      function placeNoButton() {
+        if (window.matchMedia("(max-width: 640px)").matches) return;
+        if (document.body.classList.contains("celebrate")) return;
+        if (!noIsFloating) return;
+        const maxX = Math.max(edgePadding, window.innerWidth - noWidth - edgePadding);
+        const maxY = Math.max(edgePadding, window.innerHeight - noHeight - edgePadding);
+        const x = edgePadding + Math.random() * (maxX - edgePadding);
+        const y = edgePadding + Math.random() * (maxY - edgePadding);
+        noBtn.style.left = `${Math.round(x)}px`;
+        noBtn.style.top = `${Math.round(y)}px`;
+      }
+
+      function moveNoButton() {
+        if (window.matchMedia("(max-width: 640px)").matches) return;
+        if (document.body.classList.contains("celebrate")) return;
+        floatNoButton();
+        placeNoButton();
+      }
+
+      window.addEventListener("mousemove", (event) => {
+        if (event.pointerType && event.pointerType !== "mouse") return;
+        const rect = noBtn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = event.clientX - centerX;
+        const dy = event.clientY - centerY;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 90) moveNoButton();
+      });
+
+      noBtn.addEventListener("mouseenter", moveNoButton);
+      noBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        moveNoButton();
+      });
+
+      window.addEventListener("resize", () => {
+        syncNoSize();
+        placeNoButton();
+      });
+      syncNoSize();
+    </script>
+  </body>
+</html>
