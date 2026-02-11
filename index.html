@@ -155,8 +155,18 @@
           event.preventDefault();
           if (document.body.classList.contains("celebrate")) return;
           noBtn.classList.add("is-dodging");
-          const offsetX = Math.round((Math.random() * 2 - 1) * 140);
-          const offsetY = Math.round((Math.random() * 2 - 1) * 90);
+          const minDistance = 60;
+          const maxDistance = 160;
+          const directionX = Math.random() < 0.5 ? -1 : 1;
+          const directionY = Math.random() < 0.5 ? -1 : 1;
+          const magnitudeX = Math.floor(
+            minDistance + Math.random() * (maxDistance - minDistance)
+          );
+          const magnitudeY = Math.floor(
+            minDistance + Math.random() * (maxDistance - minDistance)
+          );
+          const offsetX = directionX * magnitudeX;
+          const offsetY = directionY * magnitudeY;
           noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
         },
         { passive: false }
