@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -29,9 +29,13 @@
           memory waiting to happen.
         </p>
         <div class="actions">
-          <button class="btn btn-yes" id="yesBtn" type="button">Yes, absolutely!</button>
+          <button class="btn btn-yes" id="yesBtn" type="button">
+            Yes, absolutely!
+          </button>
           <div class="no-slot">
-            <button class="btn btn-no" id="noBtn" type="button">Not this time</button>
+            <button class="btn btn-no" id="noBtn" type="button">
+              Not this time
+            </button>
           </div>
         </div>
       </section>
@@ -43,7 +47,11 @@
         <div class="celebration-card">
           <p class="celebration-eyebrow">You made my day</p>
           <h2>It’s a date!</h2>
-          <p class="celebration-text">I’ll bring the smiles — you bring the magic.</p>
+          <p class="celebration-text">
+            I’ll bring the smiles — you bring the magic.
+            <br />
+            <b>Let them know you said yes.</b>
+          </p>
         </div>
       </div>
     </main>
@@ -102,8 +110,14 @@
         if (window.matchMedia("(max-width: 640px)").matches) return;
         if (document.body.classList.contains("celebrate")) return;
         if (!noIsFloating) return;
-        const maxX = Math.max(edgePadding, window.innerWidth - noWidth - edgePadding);
-        const maxY = Math.max(edgePadding, window.innerHeight - noHeight - edgePadding);
+        const maxX = Math.max(
+          edgePadding,
+          window.innerWidth - noWidth - edgePadding,
+        );
+        const maxY = Math.max(
+          edgePadding,
+          window.innerHeight - noHeight - edgePadding,
+        );
         const x = edgePadding + Math.random() * (maxX - edgePadding);
         const y = edgePadding + Math.random() * (maxY - edgePadding);
         noBtn.style.left = `${Math.round(x)}px`;
