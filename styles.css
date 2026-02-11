@@ -79,6 +79,7 @@ h1 {
   min-height: 52px;
   width: min(100%, var(--no-width, 100%));
   height: var(--no-height, auto);
+  position: relative;
 }
 
 .btn {
@@ -124,6 +125,10 @@ h1 {
 
 .btn-no.is-floating:hover {
   transform: none;
+}
+
+.btn-no.is-dodging {
+  transition: transform 0.08s ease;
 }
 
 .btn:hover {
@@ -422,6 +427,7 @@ h1 {
 @media (max-width: 640px) {
   .card {
     padding: 40px 24px;
+    overflow: visible;
   }
 
   .actions {
@@ -430,7 +436,6 @@ h1 {
 
   .btn-no {
     position: relative;
-    transform: none !important;
   }
 
   .no-slot {

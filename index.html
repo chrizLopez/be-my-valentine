@@ -148,6 +148,29 @@
         moveNoButton();
       });
 
+      noBtn.addEventListener(
+        "touchstart",
+        (event) => {
+          if (!window.matchMedia("(max-width: 640px)").matches) return;
+          event.preventDefault();
+          if (document.body.classList.contains("celebrate")) return;
+          noBtn.classList.add("is-dodging");
+          const offsetX = Math.round((Math.random() * 2 - 1) * 140);
+          const offsetY = Math.round((Math.random() * 2 - 1) * 90);
+          noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        },
+        { passive: false }
+      );
+
+      function resetNoTouch() {
+        if (!window.matchMedia("(max-width: 640px)").matches) return;
+        noBtn.style.transform = "";
+        noBtn.classList.remove("is-dodging");
+      }
+
+      noBtn.addEventListener("touchend", resetNoTouch);
+      noBtn.addEventListener("touchcancel", resetNoTouch);
+
       window.addEventListener("resize", () => {
         syncNoSize();
         placeNoButton();
